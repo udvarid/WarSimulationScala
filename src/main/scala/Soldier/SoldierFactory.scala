@@ -40,7 +40,7 @@ object SoldierFactory {
   }
 
   private def createKnight(size: Int): List[Knight] = {
-    val knightCommand: KnightCommand = new KnightCommand
+    val footerCommand: FooterCommand = new FooterCommand
     @tailrec
     def produce(row: Int, side: Side.Value, produced: List[Knight], command: Command) : List[Knight] = {
       if (produced.size == size) produced
@@ -50,8 +50,8 @@ object SoldierFactory {
         produce(row, side, knight :: produced, command)
       }
     }
-    produce(1,  Side.North, List[Knight](), knightCommand) ++
-      produce(size - 2, Side.South, List[Knight](), knightCommand)
+    produce(1,  Side.North, List[Knight](), footerCommand) ++
+      produce(size - 2, Side.South, List[Knight](), footerCommand)
   }
 
 }

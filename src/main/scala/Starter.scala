@@ -3,15 +3,10 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.canvas.Canvas
-import scalafx.scene.paint.Color
 
 object ScalaFXHelloWorld extends JFXApp {
   val size: Int = 750
   val canvas = new Canvas(size, size)
-
-  val game = new Game(size / 25, canvas)
-  game.draw(game.soldiers)
-
 
   stage = new PrimaryStage {
     title = "Drawing Operations Test"
@@ -19,6 +14,14 @@ object ScalaFXHelloWorld extends JFXApp {
       content = canvas
     }
   }
+
+  val game = new Game(size / 25, canvas)
+  game.draw
+  println("Starting game")
+  game.startGame()
+
+
+
 
 
 }

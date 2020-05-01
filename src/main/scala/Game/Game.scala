@@ -4,6 +4,8 @@ import Soldier._
 import scalafx.scene.canvas.Canvas
 import scalafx.scene.paint.Color
 
+import scala.util.Random
+
 case class Cell(x: Int, y: Int)
 
 class Game(armySize: Int, canvas: Canvas) {
@@ -11,7 +13,7 @@ class Game(armySize: Int, canvas: Canvas) {
   val soldiers: List[Soldier] = SoldierFactory.createArmy(armySize)
   val soldierPainter: Visitor = new DrawerVisitor(canvas)
 
-  def draw(soldier: List[Soldier]): Unit = {
+  def draw(): Unit = {
     drawBasicLines
     soldiers.foreach(s => s.accept(soldierPainter))
   }
@@ -34,6 +36,30 @@ class Game(armySize: Int, canvas: Canvas) {
       gc.strokeLine(0, x * 25, size, x * 25)
     }
   }
+
+  def startGame() = {
+    val threads: List[Thread] = soldiers.map(s => new Thread(() => letsRock(s)))
+    threads.foreach(t => t.start())
+  }
+
+  def letsRock(soldier: Soldier) = {
+    var number = 0
+    while (soldier.liveStatus && number < 25) {
+      soldierAction(soldier)
+      number += 1
+      Thread.sleep(new Random().nextInt(1000))
+    }
+  }
+
+  def soldierAction(soldier: Soldier): Unit = {
+    this.synchronized{
+      soldier.getCommand.takeAction(soldier, soldiers, armySize)
+      draw()
+      Thread.sleep(1)
+    }
+  }
+
+
 
 
 
