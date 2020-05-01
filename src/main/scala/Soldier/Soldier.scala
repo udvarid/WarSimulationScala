@@ -25,6 +25,8 @@ abstract class Soldier(range: Int = 1,
 
   def getHitValue: Int = hitValue
 
+  def friend(otherSoldier: Soldier): Boolean = side.equals(otherSoldier.getSide)
+
   def getSide: Side.Value = side
 
   def getCommand: Command = command

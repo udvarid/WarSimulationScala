@@ -8,19 +8,19 @@ abstract class Command {
   def takeAction(soldier: Soldier, army: List[Soldier], size: Int): Unit
 
   def moveForward(soldier: Soldier, army: List[Soldier], size: Int): Unit = {
-    val freeCells = army
+    val occupiedCells = army
       .filter(s => s.liveStatus)
       .map(s => s.cell)
-    val possibleCells: List[Cell] = soldier.possibleCells(size).diff(freeCells)
-    if (possibleCells.nonEmpty)
+    val possibleCells: List[Cell] = soldier.possibleCells(size).diff(occupiedCells)
+    if (possibleCells.nonEmpty) {
       soldier.cell = Random.shuffle(possibleCells).head
-    soldier.refreshed()
+      soldier.refreshed()
+    }
   }
 
   def tryToFight(soldier: Soldier, army: List[Soldier], size: Int): Boolean = {
-
     val enemyCells = army
-      .filter(s => s.liveStatus && !s.getSide.equals(soldier.getSide))
+      .filter(s => s.liveStatus && !s.friend(soldier))
       .map(s => s.cell)
 
     val possibleCells: List[Cell] = soldier.possibleCells(size).filter(s => enemyCells.contains(s))
@@ -58,7 +58,7 @@ class ArcherCommand extends Command {
   def tryToShoot(soldier: Soldier, army: List[Soldier], size: Int): Boolean = {
 
     val enemyCells = army
-      .filter(s => s.liveStatus && !s.getSide.equals(soldier.getSide))
+      .filter(s => s.liveStatus && !s.friend(soldier))
       .map(s => s.cell)
 
     val possibleCells: List[Cell] = soldier.possibleCellsForShoot(size).filter(s => enemyCells.contains(s))
