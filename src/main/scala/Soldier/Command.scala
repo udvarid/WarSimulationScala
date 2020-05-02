@@ -12,10 +12,8 @@ abstract class Command {
       .filter(s => s.liveStatus)
       .map(s => s.cell)
     val possibleCells: List[Cell] = soldier.possibleCells(size).diff(occupiedCells)
-    if (possibleCells.nonEmpty) {
+    if (possibleCells.nonEmpty)
       soldier.cell = Random.shuffle(possibleCells).head
-      soldier.refreshed()
-    }
   }
 
   def tryToFight(soldier: Soldier, army: List[Soldier], size: Int): Boolean = {

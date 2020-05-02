@@ -16,7 +16,7 @@ object ScalaFXHelloWorld extends JFXApp {
   }
 
   val game = new Game(size / 25, canvas)
-  game.draw
+  game.draw()
   println("Starting game")
   game.startGame()
 

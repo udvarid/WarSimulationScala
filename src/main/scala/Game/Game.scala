@@ -37,12 +37,12 @@ class Game(armySize: Int, canvas: Canvas) {
     }
   }
 
-  def startGame() = {
+  def startGame(): Unit = {
     val threads: List[Thread] = soldiers.map(s => new Thread(() => letsRock(s)))
     threads.foreach(t => t.start())
   }
 
-  def letsRock(soldier: Soldier) = {
+  def letsRock(soldier: Soldier): Unit = {
     var number = 0
     while (soldier.liveStatus && number < 25) {
       soldierAction(soldier)
@@ -52,16 +52,12 @@ class Game(armySize: Int, canvas: Canvas) {
   }
 
   def soldierAction(soldier: Soldier): Unit = {
-    this.synchronized{
-      soldier.getCommand.takeAction(soldier, soldiers, armySize)
+    this.synchronized {
+      soldier.command.takeAction(soldier, soldiers, armySize)
       draw()
       Thread.sleep(1)
     }
   }
-
-
-
-
 
 
 }
